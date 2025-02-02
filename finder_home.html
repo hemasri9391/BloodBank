@@ -187,10 +187,10 @@
             <div class="form-container">
                 <label>Full Name:</label>
                 <input type="text" id="request-name">
-
+        
                 <label>Contact Number:</label>
                 <input type="tel" id="request-contact">
-
+        
                 <label>Blood Group Required:</label>
                 <select id="request-blood-group">
                     <option>A+</option>
@@ -202,19 +202,23 @@
                     <option>AB+</option>
                     <option>AB-</option>
                 </select>
-
+        
                 <label>Reason for Request:</label>
                 <input type="text" id="request-reason">
+        
                 <label>Urgency Level:</label>
                 <input type="text" id="urgency-level">
-                <label>Preffered Date:</label>
+        
+                <label>Preferred Date:</label>
                 <input type="date" id="Preffered-date">
+        
                 <label>Doctor's Contact:</label>
                 <input type="tel" id="doctor-contact">
-
-                <button onclick="submitRequest()">Submit Request</button>
+        
+                <button onclick="submitRequest()" id="submitRequest">Submit Request</button>
             </div>
         </div>
+        
     </main>
 
     <script>
@@ -238,8 +242,8 @@
         }
 
         function loadProfile() {
-            document.getElementById('profile-name').value = localStorage.getItem('userName') || 'John Doe';
-            document.getElementById('profile-email').value = localStorage.getItem('userEmail') || 'johndoe@example.com';
+            document.getElementById('profile-name').value = localStorage.getItem('userName') || 'Sri';
+            document.getElementById('profile-email').value = localStorage.getItem('userEmail') || 'hemasri@example.com';
             document.getElementById('profile-blood-group').value = localStorage.getItem('userBloodGroup') || 'O+';
         }
 
@@ -298,7 +302,42 @@
         function showTotal(group, available) {
     alert(`Total Available Units of ${group}: ${available}`);
 }
-        document.getElementById("requestForm").addEventListener("submit", function(e) {
+function submitRequest() {
+    const name = document.getElementById('request-name').value;
+    const contact = document.getElementById('request-contact').value;
+    const bloodGroup = document.getElementById('request-blood-group').value;
+    const reason = document.getElementById('request-reason').value;
+    const dcontact = document.getElementById('doctor-contact').value;
+    const date = document.getElementById('Preffered-date').value;  // Fixed ID reference
+    const urgent = document.getElementById('urgency-level').value;
+
+    if (!name || !contact || !reason || !urgent || !date) {  // Added date validation
+        alert('Please fill all required fields!');
+        return;
+    }
+
+    alert(`Blood Request Submitted!\nName: ${name}\nContact: ${contact}\nBlood Group: ${bloodGroup}\nReason: ${reason}\nUrgency: ${urgent}\nDate: ${date}\nDoctor's Contact: ${dcontact}`);
+    
+}
+
+    function loadProfile() {
+        document.getElementById('profile-name').value = localStorage.getItem('userName') || 'Sri';
+        document.getElementById('profile-email').value = localStorage.getItem('userEmail') || 'hemasri@example.com';
+        document.getElementById('profile-blood-group').value = localStorage.getItem('userBloodGroup') || 'O+';
+
+        // Disable inputs to prevent editing after loading the profile
+        document.getElementById('profile-name').disabled = true;
+        document.getElementById('profile-email').disabled = true;
+        document.getElementById('profile-blood-group').disabled = true;
+        document.querySelector("button[onclick='EditProfile()']").style.display = 'none'; // Hide Edit button
+    }
+
+    function saveProfile() {
+        localStorage.setItem('userName', document.getElementById('profile-name').value);
+        localStorage.setItem('userEmail', document.getElementById('profile-email').value);
+        alert('Profile updated successfully!');
+    }
+            document.getElementById("requestForm").addEventListener("submit", function(e) {
     e.preventDefault(); // Prevent default form submission
 
     let formData = new FormData(this);
