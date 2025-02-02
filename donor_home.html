@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RedSea Care</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Times New Roman", serif;
+    }
+    /* Header Styling */
+    header {
+      background-color: rgb(189, 31, 31);
+      color: white;
+      padding: 20px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      margin-left: 20px;
+    }
+    header h1 {
+      margin: 0;
+    }
+    /* Navbar Styling */
+    .navbar {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-right: 20px;
+    }
+    .navbar a {
+      color: white;
+      text-decoration: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    .navbar a:hover {
+      background-color: rgb(237, 217, 65);
+      color: black;
+    }
+    /* Logout Button */
+    .logout-btn {
+      padding: 10px 20px;
+      color: black;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+      font-weight: bold;
+      font-size: 16px;
+    }
+    .logout-btn:hover {
+      background-color: rgb(189, 31, 31);
+      color: yellow;
+    }
+    /* Banner Styling */
+    .banner {
+      width: 100%;
+      height: auto;
+      display: block;
+      margin-top: 100px;
+    }
+    /* Main Content */
+    main {
+      padding: 20px;
+      text-align: center;
+    }
+    /* Profile Content */
+    #profileContent {
+      display: none;
+      padding: 20px;
+      background-color: #f9f9f9;
+      border-radius: 10px;
+      width: 70%;
+      margin: 20px auto;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+    #profileContent h2 {
+      font-size: 28px;
+      margin-bottom: 20px;
+      color: rgb(189, 31, 31);
+    }
+    .profile-details {
+      font-size: 18px;
+      margin-bottom: 20px;
+      text-align: left;
+      color: #333;
+    }
+    .profile-details p {
+      margin: 10px 0;
+    }
+    .edit-profile-btn {
+      background-color: rgb(237, 217, 65);
+      color: black;
+      border: none;
+      padding: 12px 20px;
+      font-size: 18px;
+      cursor: pointer;
+      border-radius: 5px;
+      font-weight: bold;
+    }
+    .edit-profile-btn:hover {
+      background-color: rgb(189, 31, 31);
+      color: yellow;
+    }
+    /* Edit Profile Form Styling */
+    #editProfileForm {
+      display: none;
+      padding: 20px;
+      background-color: #f1f1f1;
+      border-radius: 8px;
+      width: 80%;
+      margin: 20px auto;
+    }
+    #editProfileForm input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      font-size: 16px;
+      border-radius: 5px;
+      border: 1px solid #ddd;
+    }
+    #editProfileForm button {
+      width: 100%;
+      padding: 12px;
+      background-color: rgb(189, 31, 31);
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    #editProfileForm button:hover {
+      background-color: rgb(237, 217, 65);
+      color: black;
+    }
+    /* Donor Form Styling */
+    #donorForm {
+      display: none;
+      padding: 20px;
+      background-color: #f1f1f1;
+      border-radius: 8px;
+      width: 80%;
+      margin: 20px auto;
+    }
+    #donorForm input,
+    #donorForm select,
+    #donorForm button {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      font-size: 16px;
+    }
+    .form-container,
+    .certificate-container {
+      max-width: 500px;
+      margin: auto;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      background: #f9f9f9;
+    }
+    /* Certificate Styling */
+    .certificate-container {
+      margin-top: 30px;
+    }
+    .certificate {
+      position: relative;
+      padding: 40px 20px 20px 20px;
+      border: 2px solid red;
+      /* Add background image */
+      background: url("img.png") no-repeat center center;
+      background-size: cover;
+      /* Fallback background color */
+      background-color: #fff;
+      text-align: center;
+      font-size: 18px;
+      color: #333;
+      margin-top: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    /* New Certificate Header */
+    .certificate-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      margin-bottom: 10px;
+      /* Optional: Add a semi-transparent background to header text */
+      background: rgba(255, 255, 255, 0.8);
+      padding: 10px;
+      border-radius: 8px;
+    }
+    .certificate-logo {
+      width: 70px;
+      height: 70px;
+      /* Make logo clearly visible: add a border and increased contrast */
+      border: 2px solid #333;
+      border-radius: 50%;
+      margin-right: 15px;
+    }
+    .certificate-title {
+      font-size: 28px;
+      font-weight: bold;
+      color: #333;
+      margin: 0;
+    }
+    .certificate h2 {
+      font-size: 24px;
+      color: rgb(189, 31, 31);
+      margin-top: 20px;
+    }
+    .certificate p {
+      margin: 10px 0;
+    }
+    .download-btn {
+      display: none;
+      margin-top: 10px;
+      padding: 10px 15px;
+      background: red;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+  </style>
+  <!-- Include html2canvas library -->
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <img src="image.png" alt="logo" />
+    </div>
+    <h1>REDSEA CARE</h1>
+    <nav class="navbar">
+      <a href="#about" onclick="navigateTo('about')">About</a>
+      <a href="#profile" onclick="navigateTo('profile')">Profile</a>
+      <a href="#donate" onclick="navigateTo('donate')">Donate</a>
+      <button class="logout-btn" onclick="logout()">Logout</button>
+    </nav>
+  </header>
+
+  <!-- Banner Image -->
+  <img src="Donor_banner.jpg" alt="Banner" class="banner" id="bannerImage" />
+
+  <!-- About Content -->
+  <div id="aboutContent" style="display:none;">
+    <h2>About RedSea Care</h2>
+    <p>
+      Here at RedSea Care, we are dedicated to providing the best care and services to our community...
+    </p>
+  </div>
+
+  <!-- Profile Content -->
+  <div id="profileContent">
+    <h2>Sample Profile</h2>
+    <div class="profile-details">
+      <p><strong>Name:</strong> Sri</p>
+      <p><strong>Phone:</strong>9876543210</p>
+      <p><strong>Blood Type:</strong> O+</p>
+      <p><strong>City:</strong> Guntur</p>
+      <p><strong>State:</strong> Andhra Pradesh</p>
+      <p><strong>Last Donation Date:</strong> 2024-12-01</p>
+    </div>
+    <button class="edit-profile-btn" onclick="editProfile()">Edit Profile</button>
+  </div>
+
+  <!-- Edit Profile Form -->
+  <div id="editProfileForm" style="display:none;">
+    <h2>Edit Profile</h2>
+    <form class="edit-profile-form">
+      <input type="text" id="editName" placeholder="Name" value="John Doe" />
+      <input type="text" id="editPhone" placeholder="Phone" value="+1234567890" />
+      <input type="text" id="editBloodType" placeholder="Blood Type" value="O+" />
+      <input type="text" id="editCity" placeholder="City" value="Example City" />
+      <input type="text" id="editState" placeholder="State" value="Example State" />
+      <input type="date" id="editLastDonation" placeholder="Last Donation Date" value="2024-12-15" />
+      <button type="submit" onclick="saveProfile(event)">Save Changes</button>
+    </form>
+  </div>
+
+  <!-- Donor Registration Form -->
+  <div id="donorForm">
+    <h3>Donor Registration</h3>
+    <form class="form-container" id="donorRegForm">
+      <input type="text" id="donorName" placeholder="Name" required />
+      <input type="text" id="donorPhone" placeholder="Phone" required />
+      <select id="bloodType" required>
+        <option value="">Select Blood Type</option>
+        <option value="A+">A+</option>
+        <option value="A-">A-</option>
+        <option value="B+">B+</option>
+        <option value="B-">B-</option>
+        <option value="O+">O+</option>
+        <option value="O-">O-</option>
+        <option value="AB+">AB+</option>
+        <option value="AB-">AB-</option>
+      </select>
+      <input type="text" id="donorCity" placeholder="City" required />
+      <input type="text" id="donorState" placeholder="State" required />
+      <input type="number" id="donorAge" placeholder="Age" required />
+      <input type="date" id="donorLastDonation" placeholder="Last Donation Date" required />
+      <label for="bloodAmount">Amount of Blood to Donate (in mL):</label>
+      <input type="number" id="bloodAmount" placeholder="Amount in mL" required />
+      <label for="smoking">Do you smoke?</label>
+      <select id="smoking" required>
+        <option value="">Select</option>
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+      </select>
+      <label for="alcohol">Do you drink alcohol?</label>
+      <select id="alcohol" required>
+        <option value="">Select</option>
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+      </select>
+      <label for="sugar">Do you have any sugar-related health issues (e.g., diabetes)?</label>
+      <select id="sugar" required>
+        <option value="">Select</option>
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+      </select>
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+
+  <!-- Certificate Container -->
+  <div class="certificate-container">
+    <div id="certificate" class="certificate">
+      <!-- Certificate Header with Logo and Title -->
+      <div class="certificate-header">
+        <img src="img.jpg" alt="Logo" class="certificate-logo" />
+        <h1 class="certificate-title">RedSea Care</h1>
+      </div>
+      <h2>Certificate of Appreciation</h2>
+      <p>This is to certify that</p>
+      <h3 id="certName"></h3>
+      <p>has generously donated blood on</p>
+      <p id="certDate"></p>
+      <p>Thank you for your noble contribution!</p>
+    </div>
+    <button id="downloadBtn" class="download-btn">Download Certificate</button>
+  </div>
+
+  <script>
+    function logout() {
+      window.location.href = 'index.html'; // Redirects to login page
+    }
+
+    function navigateTo(page) {
+      // Hide all content sections
+      document.getElementById('aboutContent').style.display = 'none';
+      document.getElementById('profileContent').style.display = 'none';
+      document.getElementById('donorForm').style.display = 'none';
+      document.getElementById('editProfileForm').style.display = 'none';
+      document.getElementById('bannerImage').style.display = 'none';
+
+      // Show the respective content
+      if (page === 'about') {
+        document.getElementById('aboutContent').style.display = 'block';
+        document.getElementById('bannerImage').style.display = 'block';
+      } else if (page === 'profile') {
+        document.getElementById('profileContent').style.display = 'block';
+      } else if (page === 'donate') {
+        document.getElementById('donorForm').style.display = 'block';
+      }
+    }
+
+    // User Profile Data
+    let userProfile = {
+      name: 'Sri',
+      phone: '9876543210',
+      bloodType: 'O+',
+      city: 'Guntur',
+      state: 'Andhra Pradesh',
+      lastDonation: '2024-12-01'
+    };
+
+    // Function to load the profile content dynamically
+    function loadProfile() {
+      document.getElementById('profileContent').style.display = 'block';
+      document.getElementById('profileContent').innerHTML = `
+        <h2>${userProfile.name}'s Profile</h2>
+        <div class="profile-details">
+          <p><strong>Name:</strong> ${userProfile.name}</p>
+          <p><strong>Phone:</strong> ${userProfile.phone}</p>
+          <p><strong>Blood Type:</strong> ${userProfile.bloodType}</p>
+          <p><strong>City:</strong> ${userProfile.city}</p>
+          <p><strong>State:</strong> ${userProfile.state}</p>
+          <p><strong>Last Donation Date:</strong> ${userProfile.lastDonation}</p>
+        </div>
+        <button class="edit-profile-btn" onclick="editProfile()">Edit Profile</button>
+      `;
+    }
+
+    // Function to load the edit profile form
+    function editProfile() {
+      document.getElementById('profileContent').style.display = 'none';
+      document.getElementById('editProfileForm').style.display = 'block';
+      document.getElementById('editName').value = userProfile.name;
+      document.getElementById('editPhone').value = userProfile.phone;
+      document.getElementById('editBloodType').value = userProfile.bloodType;
+      document.getElementById('editCity').value = userProfile.city;
+      document.getElementById('editState').value = userProfile.state;
+      document.getElementById('editLastDonation').value = userProfile.lastDonation;
+    }
+
+    // Function to save updated profile
+    function saveProfile(event) {
+      event.preventDefault(); // Prevent form submission
+
+      // Update the profile data from form fields
+      userProfile.name = document.getElementById('editName').value;
+      userProfile.phone = document.getElementById('editPhone').value;
+      userProfile.bloodType = document.getElementById('editBloodType').value;
+      userProfile.city = document.getElementById('editCity').value;
+      userProfile.state = document.getElementById('editState').value;
+      userProfile.lastDonation = document.getElementById('editLastDonation').value;
+
+      // Reload the profile content with the updated information
+      loadProfile();
+
+      // Hide the edit form
+      document.getElementById('editProfileForm').style.display = 'none';
+    }
+
+    // Call loadProfile to show the profile after login
+    loadProfile();
+
+    function registerDonor(event) {
+      event.preventDefault(); // Prevent form submission
+
+      // Gather form data
+      const donorData = {
+        donorName: document.getElementById('donorName').value,
+        donorPhone: document.getElementById('donorPhone').value,
+        bloodType: document.getElementById('bloodType').value,
+        donorCity: document.getElementById('donorCity').value,
+        donorState: document.getElementById('donorState').value,
+        donorAge: document.getElementById('donorAge').value,
+        donorLastDonation: document.getElementById('donorLastDonation').value,
+        bloodAmount: document.getElementById('bloodAmount').value,
+        smoking: document.getElementById('smoking').value,
+        alcohol: document.getElementById('alcohol').value,
+        sugar: document.getElementById('sugar').value
+      };
+
+      // Simulate registration process (e.g., sending data to a server)
+      console.log(donorData);
+      alert("Donor Donated Blood successfully!");
+
+      // Display certificate
+      let name = donorData.donorName;
+      let date = new Date().toLocaleDateString();
+      document.getElementById('certName').innerText = name;
+      document.getElementById('certDate').innerText = date;
+      document.getElementById('certificate').style.display = "block";
+      document.getElementById('downloadBtn').style.display = "inline-block";
+    }
+
+    // Attach the event listener to the correct form (donorRegForm)
+    document.getElementById('donorRegForm').addEventListener('submit', registerDonor);
+
+    // Attach download certificate functionality
+    document.getElementById('downloadBtn').addEventListener('click', function () {
+      html2canvas(document.getElementById('certificate')).then(canvas => {
+        let link = document.createElement("a");
+        link.download = "donor_certificate.png";
+        link.href = canvas.toDataURL("img1.jpg");
+        link.click();
+      });
+    });
+    document.getElementById('donorForm').addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent the default form submission
+
+    // Get form data
+    var formData = new FormData(this);
+
+    // Make the AJAX request
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'donate.php', true);
+
+    // Set up the callback to handle the response
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            var response = JSON.parse(xhr.responseText);
+            
+            if (response.status === 'success') {
+                // If success, show success message and reset the form
+                document.getElementById('message').innerHTML = `<p style="color:green;">${response.message}</p>`;
+                document.getElementById('donorForm').reset();
+            } else {
+                // If error, show error message
+                document.getElementById('message').innerHTML = `<p style="color:red;">${response.message}</p>`;
+            }
+        } else {
+            // Handle server error
+            document.getElementById('message').innerHTML = `<p style="color:red;">There was an error submitting the form. Please try again.</p>`;
+        }
+    };
+
+    // Send the request
+    xhr.send(formData);
+});
+
+  </script>
+</body>
+</html>
+

@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RedSea Care</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: "Times New Roman", serif;
+        }
+
+        header {
+            background-color: rgb(189, 31, 31);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        h1 {
+            margin: 0;
+            flex-grow: 1;
+            text-align: center;
+        }
+
+        nav {
+            display: flex;
+            gap: 20px;
+            margin-right: 20px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            padding: 8px 12px;
+        }
+
+        nav a:hover {
+            background-color: rgb(150, 20, 20);
+            border-radius: 5px;
+        }
+
+        main {
+            margin-top: 120px;
+            padding: 20px;
+        }
+
+        .banner {
+            width: 100%;
+            height: 600px;
+            margin-top: 80px;
+        }
+
+        .logo img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin-left: 20px;
+        }
+
+        .content {
+            display: none;
+        }
+
+        .content.active {
+            display: block;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(2, auto);
+            gap: 25px;
+            padding: 30px;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .grid-item {
+            background-color: #f8d7da;
+            border: 3px solid #c82333;
+            padding: 20px;
+            text-align: center;
+            border-radius: 15px;
+            box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.3);
+            font-size: 18px;
+        }
+
+        .blood-img {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 15px;
+        }
+
+        .form-container {
+            max-width: 500px;
+            margin: auto;
+            padding: 20px;
+            border: 2px solid #c82333;
+            border-radius: 10px;
+            background-color: #f8d7da;
+        }
+
+        .form-container input, .form-container select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #c82333;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: 0.3s ease-in-out;
+            display: block;
+            margin: auto;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #a71d2a;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="image.png" alt="logo">
+        </div>
+        <h1>REDSEA CARE</h1>
+        <nav>
+            <a href="#about" onclick="navigateTo('about')">About</a>
+            <a href="#inventory" onclick="navigateTo('inventory')">Inventory</a>
+            <a href="#profile" onclick="navigateTo('profile')">Profile</a>
+            <a href="#request" onclick="navigateTo('request')">Request</a>
+            <a href="javascript:void(0)" onclick="logout()">Logout</a>
+        </nav>
+    </header>
+
+    <img id="banner" src="Finder_banner.jpg" alt="Banner" class="banner">
+
+    <main>
+        <div id="about" class="content">
+            <h2>About Us</h2>
+            <p>RedSea Care is dedicated to connecting donors with those in need.</p>
+        </div>
+
+        <div id="inventory" class="content">
+            <h2>Blood Inventory</h2>
+            <div class="grid-container" id="inventory-grid"></div>
+        </div>
+
+        <div id="profile" class="content">
+            <h2>Your Profile</h2>
+            <div class="form-container">
+                <label>Name:</label>
+                <input type="text" id="profile-name">
+                
+                <label>Email:</label>
+                <input type="email" id="profile-email">
+
+                <label>Blood Group:</label>
+                <input type="text" id="profile-blood-group" readonly>
+
+                <button onclick="EditProfile()">Edit Profile</button>
+            </div>
+        </div>
+
+        <div id="request" class="content">
+            <h2>Request Blood</h2>
+            <div class="form-container">
+                <label>Full Name:</label>
+                <input type="text" id="request-name">
+
+                <label>Contact Number:</label>
+                <input type="tel" id="request-contact">
+
+                <label>Blood Group Required:</label>
+                <select id="request-blood-group">
+                    <option>A+</option>
+                    <option>A-</option>
+                    <option>B+</option>
+                    <option>B-</option>
+                    <option>O+</option>
+                    <option>O-</option>
+                    <option>AB+</option>
+                    <option>AB-</option>
+                </select>
+
+                <label>Reason for Request:</label>
+                <input type="text" id="request-reason">
+                <label>Urgency Level:</label>
+                <input type="text" id="urgency-level">
+                <label>Preffered Date:</label>
+                <input type="date" id="Preffered-date">
+                <label>Doctor's Contact:</label>
+                <input type="tel" id="doctor-contact">
+
+                <button onclick="submitRequest()">Submit Request</button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function navigateTo(page) {
+            document.querySelectorAll('.content').forEach(content => content.classList.remove('active'));
+            document.getElementById(page).classList.add('active');
+
+            document.getElementById('banner').style.display = page === 'about' ? 'block' : 'none';
+
+            if (page === 'inventory') loadInventory();
+            if (page === 'profile') loadProfile();
+        }
+
+        function logout() {
+            window.location.href = 'index.html';
+        }
+
+        window.onload = function() {
+            const page = window.location.hash.replace('#', '') || 'about';
+            navigateTo(page);
+        }
+
+        function loadProfile() {
+            document.getElementById('profile-name').value = localStorage.getItem('userName') || 'John Doe';
+            document.getElementById('profile-email').value = localStorage.getItem('userEmail') || 'johndoe@example.com';
+            document.getElementById('profile-blood-group').value = localStorage.getItem('userBloodGroup') || 'O+';
+        }
+
+        function saveProfile() {
+            localStorage.setItem('userName', document.getElementById('profile-name').value);
+            localStorage.setItem('userEmail', document.getElementById('profile-email').value);
+            alert('Profile updated successfully!');
+        }
+
+        function submitRequest() {
+            const name = document.getElementById('request-name').value;
+            const contact = document.getElementById('request-contact').value;
+            const bloodGroup = document.getElementById('request-blood-group').value;
+            const reason = document.getElementById('request-reason').value;
+            const dcontact = document.getElementById('doctor-contact').value;
+            const date = document.getElementById('preffered-date').value;
+            const urgent = document.getElementById('urgency-level').value;
+
+            if (!name || !contact || !reason||!urgent) {
+                alert('Please fill all fields!');
+                return;
+            }
+
+            alert(`Blood Request Submitted!\nName: ${name}\nContact: ${contact}\nBlood Group: ${bloodGroup}\nReason: ${reason}`);
+        }
+
+        function loadInventory() {
+            // **Keeping Inventory exactly as it was before**
+            const inventoryGrid = document.getElementById("inventory-grid");
+            inventoryGrid.innerHTML = ""; 
+
+            const bloodGroups = [
+                { group: "A+", donors: 120, requests: 50, image: "a+.png" },
+                { group: "A-", donors: 90, requests: 40, image: "a-.png" },
+                { group: "B+", donors: 130, requests: 60, image: "b+.png" },
+                { group: "B-", donors: 80, requests: 30, image: "b-.png" },
+                { group: "O+", donors: 200, requests: 90, image: "o+.png" },
+                { group: "O-", donors: 50, requests: 20, image: "o-.png" },
+                { group: "AB+", donors: 60, requests: 25, image: "ab+.png" },
+                { group: "AB-", donors: 40, requests: 15, image: "ab-.png" }
+            ];
+
+            bloodGroups.forEach(bg => {
+                const item = document.createElement("div");
+                item.classList.add("grid-item");
+                item.innerHTML = `
+                    <img src="${bg.image}" alt="${bg.group}" class="blood-img">
+                    <h3>${bg.group}</h3>
+                    <p>Donors: ${bg.donors}</p>
+                    <p>Requests: ${bg.requests}</p>
+                    <button onclick="showTotal('${bg.group}', ${bg.donors - bg.requests})">Total Available</button>
+                `;
+                inventoryGrid.appendChild(item);
+            });
+        }
+        function showTotal(group, available) {
+    alert(`Total Available Units of ${group}: ${available}`);
+}
+        document.getElementById("requestForm").addEventListener("submit", function(e) {
+    e.preventDefault(); // Prevent default form submission
+
+    let formData = new FormData(this);
+
+    fetch("request.php", {
+        method: "POST",
+        body: formData
+    })
+    .then(res => res.json())
+    .then(data => {
+        alert(data.message);
+    })
+    .catch(err => {
+        alert("An error occurred");
+    });
+});
+// Make the AJAX request to donate.php to add a donor
+document.getElementById('donorForm').addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent the default form submission
+
+    // Get form data
+    var formData = new FormData(this);
+
+    // Make the AJAX request
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'donate.php', true);
+
+    // Set up the callback to handle the response
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            var response = JSON.parse(xhr.responseText);
+
+            if (response.status === 'success') {
+                // Show success message and reset the form
+                document.getElementById('message').innerHTML = `<p style="color:green;">${response.message}</p>`;
+                document.getElementById('donorForm').reset();
+
+                // Now update the inventory display with the new count
+                updateInventoryDisplay(response.updatedBloodCount, formData.get('bloodType'));
+            } else {
+                // Show error message
+                document.getElementById('message').innerHTML = `<p style="color:red;">${response.message}</p>`;
+            }
+        } else {
+            // Handle server error
+            document.getElementById('message').innerHTML = `<p style="color:red;">There was an error submitting the form. Please try again.</p>`;
+        }
+    };
+
+    // Send the request
+    xhr.send(formData);
+});
+
+// Function to update the inventory count displayed on the page
+// function updateInventoryDisplay(updatedBloodCount, bloodType) {
+//     // Find the inventory element for the specific blood type and update its count
+//     var inventoryElement = document.getElementById(bloodType + '-count');
+//     if (inventoryElement) {
+//         inventoryElement.innerHTML = updatedBloodCount;
+//     } else {
+//         // If the element does not exist, handle it (e.g., display a message)
+//         console.error('Inventory element not found for blood type: ' + bloodType);
+//     }
+// }
+    </script>
+</body>
+</html>
